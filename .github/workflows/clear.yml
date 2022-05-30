@@ -1,0 +1,19 @@
+name: 清理
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * 1'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: 删除提交记录
+      run: |
+        git config --global user.name "noreply" 
+        git config --global user.email noreply@github.com
+        git checkout --orphan new_branch
+        git commit -m "初始化仓库"
+        git branch -D main
+        git branch -m main
+        git push -f origin main
